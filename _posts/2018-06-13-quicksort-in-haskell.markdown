@@ -12,7 +12,7 @@ qsort [] = []
 qsort (x:xs) = qsort (x:xs) = qsort (filter (< x) xs) ++ [x] ++ qsort (filter (>= x) xs)
 {% endhighlight %}
 
-Except this is far from real quicksort. First of all, the list type `[a]` has linear, not constant time access. Secondly, the sorting is done, not in place, by making a copies to construct the sorted list.
+Except this is far from real quicksort. First of all, the list type `[a]` has linear, not constant time access. Secondly, the sorting is done, not in place, by making copies to construct the sorted list.
 
 To do the genuine in-place quicksort, we will need some form of Haskell array. Here, we will use the `STArray`, which is powered by the ST Monad. The ST Monad can be summarized as follows.
 
