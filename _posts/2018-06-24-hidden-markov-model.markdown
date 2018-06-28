@@ -1,10 +1,11 @@
 ---
 layout: post
 title: Hidden Markov models
+category: machine learning
 mathjax: true
 ---
 
-We present here some algortihms on Hidden Markov models.
+We present here some algorithms on Hidden Markov models.
 
 ### Training on state labeled data
 
