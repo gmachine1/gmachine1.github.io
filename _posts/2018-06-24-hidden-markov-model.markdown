@@ -66,7 +66,7 @@ They are easily computable using dynamic programming via a forward procedure and
 
 Now with the probability of $i$ at time $t$ and $j$ at time $t+1$, to re-estimate the transition matrix, we ought to divide by the probability of $i$ at time $t$. This is, again by Bayes' theorem,
 
-$$Pr(X_t = i | Y, \theta) = \frac{P(X_t = i, Y | \theta)}{P(Y | \theta)} = \frac{\alpha_i(t)\beta_i(t)}{\sum_j \alpha_j(t)\beta_j(t)}.$$
+$$\gamma_i(t) = Pr(X_t = i | Y, \theta) = \frac{P(X_t = i, Y | \theta)}{P(Y | \theta)} = \frac{\alpha_i(t)\beta_i(t)}{\sum_j \alpha_j(t)\beta_j(t)}.$$
 
 So our update for the transition probability matrix will be
 
@@ -83,5 +83,27 @@ For the emission distribution, we simply for each output value, qualify on it vi
 $$b_i^*(v_k) = \frac{\sum_{t=1}^T 1_{y_t = v_k} \gamma_i(t)}{\sum_{t=1}^T \gamma_i(t)}.$$
 
 This algorithm, called the [Baum-Welch algorithm](https://en.wikipedia.org/wiki/Baum%E2%80%93Welch_algorithm), discovered in the 60s at Institute for Defense Analyses, is iterative, and is a special case of the expectation-maximization algorithm.
+
+### Concrete example
+
+We consider a Hidden Markov Model with three hidden states: `N` (noun), `V` (verb) and `O` (other). Let all transitions between states be equiprobable. Consider the following possible outputs:
+
+```
+N: mimsy | borogoves
+V: were | borogoves
+O: All | mimsy | the
+```
+
+Let all these outputs be also equiprobable.
+
+The probability $Pr(V &#124; O)$ of a transition from `O` to `V` is $\frac{1}{3}$ in this model. Let's reestimate it on the sentence `All mimsy were the borogoves` using one iteration of Baum-Welch algorithm.
+
+In this case, the $a_{ij}$s are all $1/3$.
+
+The first hidden state must be `O`. In fact, there are four possible tag sequences: `ONVON, ONVOV, OOVON, OOVOV`. The probability of going to `mimsy` is, summing across the possible states for it, `N` and `O`, $1/3 \cdot 1/2 + 1/3 \cdot 1/3 = 5/18$. So
+
+$$Pr(X_2 = N | Y, \theta) = 3/5, Pr(X_2 = O | Y, \theta) = 2/5.$$
+
+$X_3 = V, X_4 = O$ necessarily, and because there are two outputs for both `N` and `V`, $X_5$ is split half and half between the two. The expected number of times we hit `O` is $2 + 2/5 = 2.4$. The number of times we expect to transition from `O` to `V` is $1/2 + 2/5 = 0.9$. So the answer is $0.9 / 2.4$.
 
 
