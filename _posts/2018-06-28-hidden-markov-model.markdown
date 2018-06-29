@@ -28,7 +28,7 @@ In this, in addition to employment of the chain rule, we assume that the observa
 
 This is, of course, a dynamic programming solution for the actual computation. It is called the forward algorithm.
 
-### Estimating parameters only output data alone
+### Estimating parameters on output data alone
 
 Suppose we are presented with only output sequences $y_i$. How would we guess the transition probabilities, as well as the emission probabilities? The trick is to take a crude initial guess, and update that accordingly as more evidence arrives. The parameters are the following.
 
